@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | InterviewPrep AI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page">
+
+    <div class="auth-container">
+
+        <div class="auth-brand">
+            <div class="brand-icon">✦</div>
+            <span>InterviewPrep <strong>AI</strong></span>
+        </div>
+
+        <div class="auth-card">
+
+            <div class="auth-heading">
+                <div class="auth-icon">👋</div>
+                <h1>Welcome Back!</h1>
+                <p>Continue your interview preparation journey.</p>
+            </div>
+
+            <form id="loginForm">
+
+                <label for="studentEmail">Email Address</label>
+                <input
+                    type="email"
+                    id="studentEmail"
+                    placeholder="Enter your registered email"
+                    required
+                >
+
+                <label for="studentPassword">Password</label>
+                <input
+                    type="password"
+                    id="studentPassword"
+                    placeholder="Enter your password"
+                    required
+                >
+
+                <button type="submit" class="auth-button">
+                    Login to Your Account →
+                </button>
+
+                <p id="loginMessage" class="auth-message"></p>
+
+            </form>
+
+            <div class="auth-footer">
+                Don't have an account?
+                <a href="register.html">Create Account</a>
+            </div>
+
+        </div>
+
+        <p class="auth-bottom-text">
+            Your AI-powered interview preparation partner.
+        </p>
+
+    </div>
+
+    <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const email = document.getElementById('studentEmail').value;
+        const password = document.getElementById('studentPassword').value;
+        const message = document.getElementById('loginMessage');
+
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                message.textContent = 'Login successful! Welcome, ' + result.student.fullName;
+                message.style.color = 'green';
+
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+
+            } else {
+                message.textContent = result.message;
+                message.style.color = 'red';
+            }
+
+        } catch (error) {
+            message.textContent = 'Unable to connect to the server.';
+            message.style.color = 'red';
+        }
+    });
+    </script>
+
+</body>
+</html>

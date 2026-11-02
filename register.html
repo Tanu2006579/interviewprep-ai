@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | InterviewPrep AI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="auth-page">
+
+    <div class="auth-container">
+
+        <!-- BRAND -->
+        <div class="auth-brand">
+            <div class="brand-icon">✦</div>
+            <span>InterviewPrep <strong>AI</strong></span>
+        </div>
+
+        <!-- REGISTRATION CARD -->
+        <div class="auth-card">
+
+            <div class="auth-heading">
+                <div class="auth-icon">🚀</div>
+                <h1>Create Account</h1>
+                <p>Start your journey towards interview success.</p>
+            </div>
+
+            <form id="registerForm">
+
+                <label for="studentName">Full Name</label>
+                <input
+                    type="text"
+                    id="studentName"
+                    placeholder="Enter your full name"
+                    required
+                >
+
+                <label for="studentEmail">Email Address</label>
+                <input
+                    type="email"
+                    id="studentEmail"
+                    placeholder="Enter your email address"
+                    required
+                >
+
+                <label for="studentPassword">Password</label>
+                <input
+                    type="password"
+                    id="studentPassword"
+                    placeholder="Create a password (minimum 8 characters)"
+                    minlength="8"
+                    required
+                >
+
+                <label for="confirmPassword">Confirm Password</label>
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    placeholder="Re-enter your password"
+                    minlength="8"
+                    required
+                >
+
+                <button type="submit" class="auth-button">
+                    Create My Account →
+                </button>
+
+                <p id="registerMessage" class="auth-message"></p>
+
+            </form>
+
+            <div class="auth-footer">
+                Already have an account?
+                <a href="login.html">Login here</a>
+            </div>
+
+        </div>
+
+        <p class="auth-bottom-text">
+            Practice smarter. Prepare better. Succeed with confidence.
+        </p>
+
+    </div>
+
+    <!-- REGISTRATION JAVASCRIPT -->
+    <script>
+    document.getElementById('registerForm').addEventListener('submit', async function(event) {
+
+        event.preventDefault();
+
+        const fullName = document.getElementById('studentName').value.trim();
+        const email = document.getElementById('studentEmail').value;
+        const password = document.getElementById('studentPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const message = document.getElementById('registerMessage');
+
+        message.textContent = '';
+
+        if (password !== confirmPassword) {
+            message.textContent = 'Passwords do not match!';
+            message.style.color = 'red';
+            return;
+        }
+
+        if (password.length < 8) {
+            message.textContent = 'Password must contain at least 8 characters.';
+            message.style.color = 'red';
+            return;
+        }
+
+        try {
+
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    fullName,
+                    email,
+                    password
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+
+                message.textContent =
+                    'Registration successful! Your Student ID is: ' + result.studentId;
+
+                message.style.color = 'green';
+
+                document.getElementById('registerForm').reset();
+
+            } else {
+
+                message.textContent = result.message;
+                message.style.color = 'red';
+
+            }
+
+        } catch (error) {
+
+            message.textContent = 'Unable to connect to the server.';
+            message.style.color = 'red';
+
+        }
+
+    });
+    </script>
+
+</body>
+</html>

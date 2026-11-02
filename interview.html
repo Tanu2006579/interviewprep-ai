@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Your Interview | InterviewPrep AI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="setup-page">
+
+    <nav class="main-navbar">
+        <div class="nav-brand">
+            <span class="brand-icon">✦</span>
+            <span>InterviewPrep AI</span>
+        </div>
+
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="login.html">Logout</a>
+        </div>
+    </nav>
+
+    <main class="setup-main">
+
+        <div class="setup-heading">
+            <span class="setup-tag">YOUR PRACTICE JOURNEY STARTS HERE</span>
+            <h1>Prepare for your <span>next interview.</span></h1>
+            <p>Choose your preferred domain and customise your mock interview.</p>
+        </div>
+
+        <section class="setup-card">
+
+            <div class="setup-card-heading">
+                <div class="setup-icon">✦</div>
+                <div>
+                    <h2>Choose Your Interview</h2>
+                    <p>Set up your practice session</p>
+                </div>
+            </div>
+
+            <div class="setup-field">
+                <label for="domain">Interview Domain</label>
+                <select id="domain">
+                    <option>Web Development</option>
+                    <option>Python</option>
+                    <option>Java</option>
+                    <option>SQL</option>
+                    <option>Data Structures and Algorithms</option>
+                    <option>Machine Learning</option>
+                    <option>HR Interview</option>
+                </select>
+                <small>Select the subject you want to practise.</small>
+            </div>
+
+            <div class="setup-field">
+                <label for="questionCount">Number of Questions</label>
+                <select id="questionCount">
+                    <option value="3">3 Questions</option>
+                    <option value="5">5 Questions</option>
+                    <option value="8">8 Questions</option>
+                </select>
+                <small>Choose how many questions you want to answer.</small>
+            </div>
+
+            <button type="button" id="generateBtn" class="setup-start-btn">
+                Start Mock Interview →
+            </button>
+
+            <p id="message" class="setup-message"></p>
+
+            <a href="dashboard.html" class="setup-back-link">
+                ← Back to Dashboard
+            </a>
+
+        </section>
+
+        <p class="setup-footer">
+            Practice regularly. Improve confidently. Get interview-ready.
+        </p>
+
+    </main>
+
+    <script>
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            const domain = document.getElementById('domain').value;
+            const count = document.getElementById('questionCount').value;
+
+            window.location.href =
+                'index.html?domain=' + encodeURIComponent(domain) +
+                '&count=' + count + '&generate=1';
+        });
+    </script>
+
+</body>
+</html>

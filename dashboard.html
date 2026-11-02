@@ -1,0 +1,299 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | InterviewPrep AI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-page">
+
+<div class="container">
+
+    <!-- TOP NAVIGATION -->
+    <nav class="main-navbar">
+        <div class="nav-brand">
+            <span class="nav-logo">✦</span>
+            InterviewPrep <strong>AI</strong>
+        </div>
+
+        <div class="nav-links">
+            <a href="dashboard.html" class="active">Home</a>
+            <a href="interview.html">Start Interview</a>
+            <a href="#historySection">History</a>
+            <button id="logoutBtn" class="logout-button">Logout ↗</button>
+        </div>
+    </nav>
+
+    <main>
+
+        <!-- WELCOME BANNER -->
+        <section class="welcome-banner">
+            <div>
+                <span class="welcome-tag">YOUR PERSONAL AI INTERVIEW COACH</span>
+                <h1 id="welcomeMessage">Welcome, Student!</h1>
+                <p>Ready to improve your interview skills?
+                   Let's make today count.</p>
+
+                <button class="welcome-button"
+                    onclick="window.location.href='interview.html'">
+                    Start Practising →
+                </button>
+            </div>
+
+            <div class="welcome-illustration">
+                <div class="welcome-circle">🎯</div>
+                <span>Prepare • Practise • Succeed</span>
+            </div>
+        </section>
+
+        <!-- PROFILE SECTION -->
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Your Profile</h2>
+                    <p>Your student account information</p>
+                </div>
+            </div>
+
+            <div class="profile-card">
+                <div class="profile-avatar">👤</div>
+
+                <div class="profile-details">
+                    <h3 id="profileName">Student</h3>
+
+                    <p>
+                        <strong>Student ID:</strong>
+                        <span id="studentId">Loading...</span>
+                    </p>
+
+                    <p>
+                        <strong>Email:</strong>
+                        <span id="studentEmail">Loading...</span>
+                    </p>
+                </div>
+
+                <div class="profile-badge">Student Account</div>
+            </div>
+
+        </section>
+
+        <!-- QUICK ACTION -->
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Continue Your Preparation</h2>
+                    <p>Choose your next step towards interview success.</p>
+                </div>
+            </div>
+
+            <div class="action-grid">
+
+                <div class="action-card">
+                    <div class="action-icon purple-icon">🎤</div>
+                    <h3>Mock Interview</h3>
+                    <p>Practise technical and HR interview questions
+                       in your selected domain.</p>
+                    <a href="interview.html">Start Interview →</a>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon pink-icon">📊</div>
+                    <h3>Performance History</h3>
+                    <p>Review your previous interview attempts
+                       and track your progress.</p>
+                    <a href="#historySection">View History →</a>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- INTERVIEW HISTORY -->
+        <section class="dashboard-section" id="historySection">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Interview History</h2>
+                    <p>Review and manage your previous attempts.</p>
+                </div>
+            </div>
+
+            <div class="history-card">
+                <div id="historyContainer">
+                    Loading interview history...
+                </div>
+            </div>
+
+        </section>
+
+        <p id="dashboardMessage" class="dashboard-message"></p>
+
+    </main>
+
+    <footer class="dashboard-footer">
+        © 2026 InterviewPrep AI | Your AI Interview Preparation Partner
+    </footer>
+
+</div>
+
+<script>
+
+// LOAD STUDENT DETAILS
+async function loadDashboard() {
+    try {
+        const response = await fetch('/api/me');
+
+        if (!response.ok) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const result = await response.json();
+        const student = result.student;
+
+        document.getElementById('welcomeMessage').textContent =
+            'Welcome, ' + student.fullName + '!';
+
+        document.getElementById('profileName').textContent =
+            student.fullName;
+
+        document.getElementById('studentId').textContent =
+            student.studentId;
+
+        document.getElementById('studentEmail').textContent =
+            student.email;
+
+        await loadHistory();
+
+    } catch (error) {
+        document.getElementById('dashboardMessage').textContent =
+            'Unable to connect to the server.';
+    }
+}
+
+
+// LOAD INTERVIEW HISTORY
+async function loadHistory() {
+
+    const container = document.getElementById('historyContainer');
+
+    try {
+        const response = await fetch('/api/history');
+
+        if (!response.ok) {
+            container.textContent = 'Unable to load interview history.';
+            return;
+        }
+
+        const result = await response.json();
+
+        if (!result.history || result.history.length === 0) {
+            container.textContent =
+                'No interviews completed yet. Start practising!';
+            return;
+        }
+
+        container.innerHTML = '';
+
+        result.history.forEach(interview => {
+
+            const item = document.createElement('div');
+            item.className = 'dashboard-history-item';
+
+            const details = document.createElement('div');
+            details.className = 'history-details';
+
+            const domain = document.createElement('h3');
+            domain.textContent = interview.domain;
+
+            const score = document.createElement('p');
+            score.textContent = 'Score: ' + interview.score;
+
+            const date = document.createElement('p');
+            date.textContent = 'Date: ' + interview.created_at;
+
+            details.appendChild(domain);
+            details.appendChild(score);
+            details.appendChild(date);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.className = 'delete-btn';
+
+            deleteButton.addEventListener('click', async function() {
+
+                const confirmDelete = confirm(
+                    'Are you sure you want to delete this interview record?'
+                );
+
+                if (!confirmDelete) return;
+
+                try {
+                    const deleteResponse = await fetch(
+                        '/api/history/' + interview.id,
+                        { method: 'DELETE' }
+                    );
+
+                    const deleteResult = await deleteResponse.json();
+
+                    if (deleteResponse.ok) {
+                        alert('Interview record deleted successfully!');
+                        await loadHistory();
+                    } else {
+                        alert(deleteResult.message ||
+                            'Could not delete record.');
+                    }
+
+                } catch (error) {
+                    alert('Unable to connect to the server.');
+                }
+            });
+
+            item.appendChild(details);
+            item.appendChild(deleteButton);
+
+            container.appendChild(item);
+        });
+
+    } catch (error) {
+        container.textContent = 'Unable to load interview history.';
+    }
+}
+
+
+// LOGOUT
+document.getElementById('logoutBtn').addEventListener(
+    'click', async function() {
+
+        try {
+            const response = await fetch('/api/logout', {
+                method: 'POST'
+            });
+
+            if (response.ok) {
+                window.location.href = 'login.html';
+            } else {
+                document.getElementById('dashboardMessage').textContent =
+                    'Logout failed. Please try again.';
+            }
+
+        } catch (error) {
+            document.getElementById('dashboardMessage').textContent =
+                'Unable to connect to the server.';
+        }
+    }
+);
+
+
+// LOAD DASHBOARD
+loadDashboard();
+
+</script>
+
+</body>
+</html>

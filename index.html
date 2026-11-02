@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InterviewPrep AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body class="main-interview-page">
+
+    <nav class="main-navbar">
+        <div class="nav-brand">
+            <span class="brand-icon">✦</span>
+            <span>InterviewPrep AI</span>
+        </div>
+
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="login.html">Logout</a>
+        </div>
+    </nav>
+
+    <main class="interview-main">
+
+        <!-- HOME SECTION -->
+        <section id="homeSection" class="card interview-home hidden">
+            <div class="interview-hero-icon">✦</div>
+            <span class="setup-tag">AI-POWERED PRACTICE</span>
+
+            <h1>Become interview-ready with confidence.</h1>
+
+            <p>
+                Practice technical and HR interviews with interactive questions,
+                instant feedback and performance evaluation.
+            </p>
+
+            <button type="button"
+                onclick="window.location.href='login.html'">
+                Student Login →
+            </button>
+
+            <button type="button" class="secondary-interview-btn"
+                onclick="window.location.href='register.html'">
+                New Student Registration
+            </button>
+        </section>
+
+
+        <!-- INTERVIEW SETUP -->
+        <section id="setupSection" class="card interview-setup hidden">
+
+            <span class="setup-tag">LET'S GET STARTED</span>
+            <h1>Choose Your Interview</h1>
+            <p>Customise your practice session before you begin.</p>
+
+            <div class="interview-form-field">
+                <label for="domain">Interview Domain</label>
+
+                <select id="domain">
+                    <option>Web Development</option>
+                    <option>Python</option>
+                    <option>Java</option>
+                    <option>SQL</option>
+                    <option>Data Structures and Algorithms</option>
+                    <option>Machine Learning</option>
+                    <option>HR Interview</option>
+                </select>
+            </div>
+
+            <div class="interview-form-field">
+                <label for="questionCount">Number of Questions</label>
+
+                <select id="questionCount">
+                    <option value="3">3 Questions</option>
+                    <option value="5">5 Questions</option>
+                    <option value="8">8 Questions</option>
+                </select>
+            </div>
+
+            <button type="button" id="generateBtn">
+                Generate Questions →
+            </button>
+
+        </section>
+
+
+        <!-- INTERVIEW SECTION -->
+        <section id="interviewSection" class="card interview-workspace hidden">
+
+            <div class="interview-top-label">
+                <span class="setup-tag">MOCK INTERVIEW IN PROGRESS</span>
+            </div>
+
+            <h2 id="questionDomainTitle">Your Interview</h2>
+
+            <div class="progress-area">
+                <div class="progress-heading">
+                    <p id="progressText">Question 1</p>
+                    <span>Keep going!</span>
+                </div>
+
+                <div class="progress-track">
+                    <div id="progressBar" class="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <span class="question-label">INTERVIEW QUESTION</span>
+                <h3 id="questionText"></h3>
+            </div>
+
+            <div class="answer-area">
+                <label for="userAnswer">Your Answer</label>
+
+                <textarea id="userAnswer"
+                    placeholder="Take your time and write your answer here..."></textarea>
+
+                <div class="microphone-area">
+                    <button type="button" id="micBtn" class="mic-button">
+                        🎤 Speak Answer
+                    </button>
+
+                    <p id="micStatus"></p>
+                </div>
+            </div>
+
+            <button type="button" id="nextBtn" class="submit-answer-btn">
+                Submit Answer & Next →
+            </button>
+
+        </section>
+
+
+        <!-- RESULTS SECTION -->
+        <section id="resultsSection" class="card interview-results hidden">
+
+            <div class="results-icon">✓</div>
+
+            <span class="setup-tag">INTERVIEW COMPLETED</span>
+
+            <h1>Your Performance Report</h1>
+            <p class="results-description">
+                Here's how you performed in your mock interview.
+            </p>
+
+            <div class="score-card">
+                <span>YOUR FINAL SCORE</span>
+                <h2 id="scoreDisplay"></h2>
+            </div>
+
+            <div class="feedback-card">
+                <h3>Performance Feedback</h3>
+                <div id="feedbackText"></div>
+            </div>
+
+            <div class="summary-card">
+                <h3>Answer Summary</h3>
+                <div id="summaryContainer"></div>
+            </div>
+
+            <button type="button" id="restartBtn">
+                Try Again ↻
+            </button>
+
+            <a href="dashboard.html" class="results-dashboard-link">
+                Back to Dashboard
+            </a>
+
+        </section>
+
+        <footer class="interview-footer">
+            InterviewPrep AI · Practice. Improve. Succeed.
+        </footer>
+
+    </main>
+
+</body>
+</html>
